@@ -7,17 +7,16 @@ class TadpolesController < ApplicationController
     @tadpoles = Tadpole.all
   end
 
-  def show
-  end
+  
 
   def new
     @frog = Frog.find(set_frog)
     @tadpole = Tadpole.new
   end
 
-  def edit
-    @frog = @tadpole.frog
-  end
+  
+
+
 
   def create
     @tadpole = Tadpole.new(tadpole_params)
@@ -30,6 +29,13 @@ class TadpolesController < ApplicationController
     end
   end
 
+  def show
+  end
+
+  def edit
+    @frog = @tadpole.frog
+  end
+
   def update
     respond_to do |format|
       if @tadpole.update(tadpole_params)
@@ -38,6 +44,13 @@ class TadpolesController < ApplicationController
         format.html { render :edit }
       end
     end
+  end
+
+  def metamorphose
+    @frog = Frog.create(name: @tadpole.name, color: @tadpole.color, pond_id: @tadpole.pond.id)
+    @tadpole.destroy
+    redirect_to frog_path(@frog)
+   # @frog = Frog.create(tadpole_params)
   end
 
   def destroy
